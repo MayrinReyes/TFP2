@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}   
+    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre"></input><br><br>
+    <input type="email" class="form-control" name="correo" id="correo" placeholder="correo"></input><br><br>
+    <input type="text" class="form-control" name="contra" id="contra" placeholder="contraseña"></input> 
+    <button type="submit" class="btn btn-primary">Ingresar</button>"
+{% endblock %}
