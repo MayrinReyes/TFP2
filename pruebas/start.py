@@ -15,35 +15,33 @@ def inicio():
     return render_template("index.html")
 
 @app.route('/login')
-def at():
+def i():
     return render_template("login.html")
 
 @app.route('/sign')
-def c():
+def s():
     return render_template("signup.html")
 
 @app.route('/close')
-def t():
+def c():
     return render_template("close.html")
 
 @app.route('/carro')
-def v():
+def carro():
     return render_template("carrito.html")
 
 ##Parte de administradores
 @app.route('/Alogin')
-def g():
+def Al():
     return render_template("Alogin.html")
 
 @app.route('/almacen')
-def t():
+def a():
     return render_template("almacen.html")
 
 @app.route('/table')
 def t():
     return render_template("table.html")
-
-
 
 
 @app.route('/area_t', methods=['POST'])
@@ -108,6 +106,115 @@ def tabla():
             G = f"{N} x {x} = {R} "
             lista.append(G)
     return render_template("t.html", r =lista, n=N, g=G)
+
+
+@app.route('/inicio', methods=['POST'])
+def iniciar():
+    if request.method == 'POST':
+        aux_Nom = request.form['nombre']
+        aux_Correo = request.form['correo']
+        aux_Contra = request.form['contra']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR' )
+        cursor = conn.cursor()
+        resultado = cursor.fetchone()
+        # Comprueba si la base de datos existe
+        if resultado:
+            print("La base de datos existe.")
+        else:
+                        # Define the SQL statements for table creation
+            sql_statements = """
+            
+CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ;
+USE `db_OAGR` ;
+-- -----------------------------------------------------
+-- Table `db_OAGR`.`admin`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_OAGR`.`admin` (
+  `id` INT() PRIMARY KEY AUTO_INCREMENT,
+  `nombre` VARCHAR(100) NOT NULL,
+  `correo` VARCHAR(100) NOT NULL,
+  `contra` VARCHAR(10) NOT NULL);
+-- -----------------------------------------------------
+-- Table `db_OAGR`.`almacen`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_OAGR`.`almacen` (
+  `id` INT() PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `producto` VARCHAR(100) NOT NULL,
+  `descripcion` VARCHAR(200) NULL DEFAULT NULL,
+  `imagen` VARCHAR() NULL DEFAULT NULL,
+  `cantidad` INT() NOT NULL,
+  `precio` INT() NOT NULL);
+-- -----------------------------------------------------
+-- Table `db_OAGR`.`cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_OAGR`.`cliente` (
+  `id` INT() PRIMARY KEY  AUTO_INCREMENT NOT NULL,
+  `nombre` VARCHAR(50) NOT NULL,
+  `correo` VARCHAR(100) NOT NULL,
+  `contra` VARCHAR(50) NOT NULL);
+
+--admin predeterminado  
+insert into admin(nombre, correo, contrasenia) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
+
+--Productos
+
+            """
+
+            # Execute the SQL statements
+            
+            statements = [stmt.strip() for stmt in sql_statements.split(';') if stmt.strip()]
+
+            # Execute each SQL statement
+            for statement in statements:
+              cursor.execute(statement)
+              cursor.commit()
+
+
+            print("La base de datos no existe.")
+            cursor.execute('')
+        cursor.execute('insert into cliente (nombre, correo, contra) values (%s, %s, %s)',(aux_Nom, aux_Correo, aux_Contra))
+        conn.commit()
+    return redirect(url_for('index'))
+"""
+username = self.username_input.text()
+        password = self.password_input.text()
+        sql = "SELECT nombre, contrasenia FROM usuarios WHERE nombre = %s"
+        con_db.cursor.execute(sql, (username,))
+        result = con_db.cursor.fetchone()
+        if result is None:
+            print("Nombre de usuario incorrecto. Vuelve a intentarlo")
+            self.username_feedback.setText(
+                "Nombre de usuario incorrecto.")
+        else:
+            user = result[0]
+            db_password = result[1]
+            if password == db_password:
+                print("Bienvenido")
+                self.username_feedback.setText("Usuario correcto")
+                self.password_feedback.setText("Contraseña correcta")
+                if not hasattr(self, 'home_window'):
+                    self.home_window = HomeWindow()
+                    self.home_window.show()
+                    self.close()
+                else:
+                    self.show()
+                
+            else:
+                self.password_feedback.setText("Contraseña incorrecta.")
+                
+                print("Acesso denegado")
+        return False
+
+    def red_register(self):
+        from signup import SignScreen
+        print("Redireccioando")
+        if not hasattr(self, 'register'):
+            self.register = SignScreen()
+            self.register.show()
+            self.close()
+        else:
+            self.show()"""
+
 
 if __name__ == "__main__":
     app.run(debug=True)
