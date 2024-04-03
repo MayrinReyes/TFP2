@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}   
-<form action="/agrega_comenta" method="post">
+<link rel="stylesheet" href="../static/css/login.css">
+<div class="col" id="cuadro">
+<center><form action="/agrega_comenta" method="post" >
     <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre"></input><br><br>
     <input type="email" class="form-control" name="correo" id="correo" placeholder="correo"></input><br><br>
     <input type="text" class="form-control" name="contra" id="contra" placeholder="contraseña"></input> 
     <button type="submit" class="btn btn-primary">Ingresar</button>
-</form>
+</form></center></div>
 {% endblock %}
