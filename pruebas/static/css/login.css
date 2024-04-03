@@ -1,0 +1,10 @@
+#cuadro{
+    display: block;
+    width: 70%;
+    height: 40%;
+    background-color: rgb(214, 172, 108);
+    border-radius: 20px;
+}
+.form-control{
+    background-color: rgba(129, 104, 67, 0.295);
+}
