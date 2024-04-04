@@ -219,7 +219,7 @@ username = self.username_input.text()
 def crudAdmin():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from comenta order by id')
+    cursor.execute('select id, nombre, correo, contra from admin order by id')
     datos = cursor.fetchall()
     return render_template("crudAdmin.html", comentarios = datos)
 
@@ -227,7 +227,7 @@ def crudAdmin():
 def editAdmin(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from comenta where id = %s', (id))
+    cursor.execute('select id, nombre, correo, contra from admin where id = %s', (id))
     dato  = cursor.fetchall()
     return render_template("editAdmin.html", comentar=dato[0])
 
@@ -239,7 +239,7 @@ def editar_comenta(id):
         contra=request.form['contra']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update comenta set correo=%s, comentarios=%s where id=%s', (nom,corr,contra,id))
+        cursor.execute('update admin set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
         conn.commit()
     return redirect(url_for('crudAdmin'))
 
@@ -247,7 +247,7 @@ def editar_comenta(id):
 def borrarAdmin(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('delete from comenta where id = {0}'.format(id))
+    cursor.execute('delete from admin where id = {0}'.format(id))
     conn.commit()
     return redirect(url_for('crudAdmin'))
 
@@ -259,7 +259,7 @@ def agrega_comenta():
         aux_Contra = request.form['contra']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('insert into comenta (correo,comentarios) values (%s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
+        cursor.execute('insert into admin (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
         conn.commit()
     return redirect(url_for('crudAdmin'))
 
