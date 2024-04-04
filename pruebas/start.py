@@ -240,7 +240,7 @@ def agrega_admin():
 def crudClient():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from cliente order by id')
+    cursor.execute('select id, nombre, correo, contra, direccion, telefono from cliente order by id')
     datos = cursor.fetchall()
     return render_template("crudClient.html", comenta = datos)
 
@@ -248,7 +248,7 @@ def crudClient():
 def editClient(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from cliente where id = %s', (id))
+    cursor.execute('select id, nombre, correo, contra, direccion, telefono from cliente where id = %s', (id))
     dato  = cursor.fetchall()
     return render_template("editClient.html", comentar=dato[0])
 
@@ -258,9 +258,11 @@ def editar_cliente(id):
         nom=request.form['nombre']
         corr=request.form['correo']
         contra=request.form['contra']
+        direc=request.form['direccion']
+        tel=request.form['telefono']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update cliente set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
+        cursor.execute('update cliente set nombre=%s, correo=%s, contra=%s, direccion=%s, telefono=%s where id=%s', (nom,corr,contra,direc,tel,id))
         conn.commit()
     return redirect(url_for('crudClient'))
 
@@ -278,9 +280,11 @@ def agrega_comenta():
         aux_Nombre = request.form['nombre']
         aux_Correo = request.form['correo']
         aux_Contra = request.form['contra']
+        aux_Direccion = request.form['direccion']
+        aux_Telefono = request.form['telefono']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('insert into cliente (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
+        cursor.execute('insert into cliente (nombre,correo,contra,direccion,telefono) values (%s, %s, %s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra, aux_Direccion, aux_Telefono))
         conn.commit()
     return redirect(url_for('crudClient'))
 
