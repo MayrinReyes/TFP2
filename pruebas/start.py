@@ -43,69 +43,135 @@ def a():
 def t():
     return render_template("table.html")
 
-
-@app.route('/area_t', methods=['POST'])
-def area():
-    if request.method == 'POST':
-        A = 0
-        B = int(request.form['base'])
-        H = int(request.form['altura'])
-        A =  B * H / 2
-    return render_template("at.html", res =A, r =B, re =H)
-#intenta ponerlo en una tupla o lista, en forma de string como las cali
-@app.route('/cal', methods=['POST'])
-def cal():
-    if request.method == 'POST':
-        C = int(request.form['cali'])
-        if C==10:
-            R="Tu calificacion es Excelente"
-        elif C==9 or C==8:
-            R="Tu calificacion es Notable"
-        elif C==7:
-            R="Tu calificacion es Regular"
-        elif C==6:
-            R="Tu calificacion es Suficiente"
-        elif C==0 or C<=5:
-            R="Tu calificacion es Reprobado"
-        else:
-            R="Solo introducir números enteros entre 0 a 10"
-    return render_template("c.html", res = R, r=C)
+def conex():
+    conn = pymysql.connect(host='localhost', user='root', passwd='')
+    cursor = conn.cursor()
 
 
-@app.route('/viaje', methods=['POST'])
-def viaje():
-    if request.method == 'POST':
-        Cos = 3500
-        B = int(request.form['alu'])
-        if B<=99 and B>=50:
-            R=70
-        elif B<=49 and B>=30:
-            R=95
-        elif B<30:
-            R=3500/B
-        else:
-            R="Introducir un numero valido"
-        RE=B*R
-        RES=RE-3500
-    return render_template("v.html", r=B, re=R, res=Cos, resu=RES)
+    # Consulta SQL para verificar la existencia de una base de datos específica (en este caso, 'db_OAGR')
+    cursor.execute("SHOW DATABASES LIKE 'db_OAGR'")
+    resultado = cursor.fetchone()
 
-@app.route('/grados', methods=['POST'])
-def grados():
-    if request.method == 'POST':
-        F = int(request.form['fah'])
-        C= (F-32)*5/9
-    return render_template("g.html", r =F, re =C)
 
-@app.route('/tm', methods=['POST'])
-def tabla():
-    if request.method == 'POST':
-        N = int(request.form['num'])
-        lista=[]
-        for x in range(1, 11):
-            R=N*x
-            G = f"{N} x {x} = {R} "
-            lista.append(G)
-    return render_template("t.html", r =lista, n=N, g=G)
+    # Comprueba si la base de datos existe
+    if resultado:
+        print("La base de datos existe.")
+    else:
+        print("La base de datos no existe.")
+        cursor.execute("CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ")
+        cursor.execute("USE `db_OAGR`")
+       
+        # Define the SQL statements for table creation
+        sql_statements = """
+
+
+            CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ;
+            USE `db_OAGR` ;
+            -- -----------------------------------------------------
+            -- Table `db_OAGR`.`admin`
+            -- -----------------------------------------------------
+            CREATE TABLE IF NOT EXISTS `db_OAGR`.`admin` (
+            `id` INT PRIMARY KEY AUTO_INCREMENT,
+            `nombre` VARCHAR(100) NOT NULL,
+            `correo` VARCHAR(100) NOT NULL,
+            `contra` VARCHAR(10) NOT NULL);
+            -- -----------------------------------------------------
+            -- Table `db_OAGR`.`almacen`
+            -- -----------------------------------------------------
+            CREATE TABLE IF NOT EXISTS `db_OAGR`.`almacen` (
+            `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            `producto` VARCHAR(100) NOT NULL,
+            `descripcion` VARCHAR(200) DEFAULT NULL,
+            `imagen` VARCHAR(100) DEFAULT NULL,
+            `cantidad` INT NOT NULL,
+            `precio` INT NOT NULL);
+            -- -----------------------------------------------------
+            -- Table `db_OAGR`.`cliente`
+            -- -----------------------------------------------------
+            CREATE TABLE IF NOT EXISTS `db_OAGR`.`cliente` (
+            `id` INT PRIMARY KEY  AUTO_INCREMENT NOT NULL,
+            `nombre` VARCHAR(50) NOT NULL,
+            `correo` VARCHAR(100) NOT NULL,
+            `contra` VARCHAR(50) NOT NULL,
+            `direccion` VARCHAR(100) DEFAULT NULL,
+            `telefono` VARCHAR(10) DEFAULT NULL);
+
+
+            -- -----------------------------------------------------
+            -- Table `db_OAGR`.`pedidos`
+            -- -----------------------------------------------------
+            CREATE TABLE IF NOT EXISTS `db_OAGR`.`pedidos` (
+            `id` INT PRIMARY KEY  AUTO_INCREMENT NOT NULL,
+            `id_cliente` INT NOT NULL,
+            `id_producto` INT NOT NULL,
+            `cantidad` VARCHAR(100) NOT NULL,
+            `total` VARCHAR(50) NOT NULL,
+            FOREIGN KEY (`id_cliente`) REFERENCES cliente(id),
+            FOREIGN KEY (`id_producto`) REFERENCES almacen(id));
+           
+
+
+            -- -----------------------------------------------------
+            -- Table `db_OAGR`.`reservas`
+            -- -----------------------------------------------------
+            CREATE TABLE IF NOT EXISTS `db_OAGR`.`reservas` (
+            `id` INT PRIMARY KEY  AUTO_INCREMENT NOT NULL,
+            `id_cliente` INT NOT NULL,
+            `hora` time NOT NULL,
+            `dia` date NOT NULL,
+            `nperson` VARCHAR(100) NOT NULL,
+            `mesa` VARCHAR(50) NOT NULL,
+            FOREIGN KEY (`id_cliente`) REFERENCES cliente(id));
+           
+            -- admin predeterminado  
+            insert into admin(nombre, correo, contra) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
+
+
+            -- Productos
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Agua', 'Bebidas', 'agua.png', '409', '20');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Boba', 'Bebidas', 'boba.png', '209', '30');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Coca', 'Bebidas', 'coca.png', '312', '20');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Frappe', 'Bebidas', 'frappe.png', '123', '30');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Jugo de Limon', 'Bebidas', 'jugo_limon.png', '123', '25');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Jugo de Naranja', 'Bebidas', 'jugo_naranja.png', '42', '25');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Jugo de Toronja', 'Bebidas', 'jugo_toronja.png', '34', '25');
+
+
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Bombon', 'Cafe', 'bombon.png', '893', '40');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Capuchino', 'Cafe', 'capuchino.png', '213', '35');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Carajillo', 'Cafe', 'carajillo.png', '423', '30');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Cafe con Leche', 'Cafe', 'con_leche.png', '123', '30');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Espresso', 'Cafe', 'espresso.png', '124', '40');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Irlandes', 'Cafe', 'irlandes.png', '121', '45');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Latte Macchiato', 'Cafe', 'latte_macchiato.png', '321', '50');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Lungo', 'Cafe', 'lungo.png', '324', '45');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Macchiato', 'Cafe', 'macchiato.png', '145', '34');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Mocca', 'Cafe', 'mocca.png', '221', '40');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Ristretto', 'Cafe', 'ristretto.png', '342', '55');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Vienes', 'Cafe', 'vienes.png', '532', '50');
+
+
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Dorayaki', 'Comida', 'dorayaki.png', '234', '70');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Hanami Dango', 'Comida', 'hanami_dango.png', '564', '95');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Maki', 'Comida', 'maki.png', '345', '80');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Mitarashi Dango', 'Comida', 'mitarashi_dango.png', '453', '85');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Mochis', 'Comida', 'mochis.png', '533', '60');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Nigiri', 'Comida', 'nigiri.png', '564', '75');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Ramen', 'Comida', 'ramen.png', '676', '80');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Comida', 'temaki.png', '546', '50');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Comida', 'uramaki.png', '265', '82');
+        """
+        statements = [stmt.strip() for stmt in sql_statements.split(';') if stmt.strip()]
+
+
+        # Execute each SQL statement
+        for statement in statements:
+            cursor.execute(statement)
+            conn.commit()
+
+
+        print("Base de datos y tablas creadas exitosamente")
+        conn.close()
 
 
 @app.route('/inicio', methods=['POST'])
@@ -114,106 +180,13 @@ def iniciar():
         aux_Nom = request.form['nombre']
         aux_Correo = request.form['correo']
         aux_Contra = request.form['contra']
+        conex()
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR' )
         cursor = conn.cursor()
-        resultado = cursor.fetchone()
-        # Comprueba si la base de datos existe
-        if resultado:
-            print("La base de datos existe.")
-        else:
-                        # Define the SQL statements for table creation
-            sql_statements = """
-            
-CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ;
-USE `db_OAGR` ;
--- -----------------------------------------------------
--- Table `db_OAGR`.`admin`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_OAGR`.`admin` (
-  `id` INT() PRIMARY KEY AUTO_INCREMENT,
-  `nombre` VARCHAR(100) NOT NULL,
-  `correo` VARCHAR(100) NOT NULL,
-  `contra` VARCHAR(10) NOT NULL);
--- -----------------------------------------------------
--- Table `db_OAGR`.`almacen`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_OAGR`.`almacen` (
-  `id` INT() PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `producto` VARCHAR(100) NOT NULL,
-  `descripcion` VARCHAR(200) NULL DEFAULT NULL,
-  `imagen` VARCHAR() NULL DEFAULT NULL,
-  `cantidad` INT() NOT NULL,
-  `precio` INT() NOT NULL);
--- -----------------------------------------------------
--- Table `db_OAGR`.`cliente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_OAGR`.`cliente` (
-  `id` INT() PRIMARY KEY  AUTO_INCREMENT NOT NULL,
-  `nombre` VARCHAR(50) NOT NULL,
-  `correo` VARCHAR(100) NOT NULL,
-  `contra` VARCHAR(50) NOT NULL);
-
---admin predeterminado  
-insert into admin(nombre, correo, contrasenia) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
-
---Productos
-
-            """
-
-            # Execute the SQL statements
-            
-            statements = [stmt.strip() for stmt in sql_statements.split(';') if stmt.strip()]
-
-            # Execute each SQL statement
-            for statement in statements:
-              cursor.execute(statement)
-              cursor.commit()
-
-
-            print("La base de datos no existe.")
-            cursor.execute('')
-        cursor.execute('insert into cliente (nombre, correo, contra) values (%s, %s, %s)',(aux_Nom, aux_Correo, aux_Contra))
+        cursor.execute('insert into admin (nombre, correo, contra) values (%s, %s, %s)',(aux_Nom, aux_Correo, aux_Contra))
         conn.commit()
-    return redirect(url_for('index'))
-"""
-username = self.username_input.text()
-        password = self.password_input.text()
-        sql = "SELECT nombre, contrasenia FROM usuarios WHERE nombre = %s"
-        con_db.cursor.execute(sql, (username,))
-        result = con_db.cursor.fetchone()
-        if result is None:
-            print("Nombre de usuario incorrecto. Vuelve a intentarlo")
-            self.username_feedback.setText(
-                "Nombre de usuario incorrecto.")
-        else:
-            user = result[0]
-            db_password = result[1]
-            if password == db_password:
-                print("Bienvenido")
-                self.username_feedback.setText("Usuario correcto")
-                self.password_feedback.setText("Contraseña correcta")
-                if not hasattr(self, 'home_window'):
-                    self.home_window = HomeWindow()
-                    self.home_window.show()
-                    self.close()
-                else:
-                    self.show()
-                
-            else:
-                self.password_feedback.setText("Contraseña incorrecta.")
-                
-                print("Acesso denegado")
-        return False
+    return redirect(url_for('home'))
 
-    def red_register(self):
-        from signup import SignScreen
-        print("Redireccioando")
-        if not hasattr(self, 'register'):
-            self.register = SignScreen()
-            self.register.show()
-            self.close()
-        else:
-            self.show()"""
 
 @app.route('/crudAdmin')
 def crudAdmin():
