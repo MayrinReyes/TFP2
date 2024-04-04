@@ -215,6 +215,54 @@ username = self.username_input.text()
         else:
             self.show()"""
 
+@app.route('/crudAdmin')
+def crudAdmin():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, nombre, correo, contra from comenta order by id')
+    datos = cursor.fetchall()
+    return render_template("crudAdmin.html", comentarios = datos)
+
+@app.route('/editAdmin/<string:id>')
+def editAdmin(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, nombre, correo, contra from comenta where id = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("editAdmin.html", comentar=dato[0])
+
+@app.route('/editar_admin/<string:id>',methods=['POST'])
+def editar_comenta(id):
+    if request.method == 'POST':
+        nom=request.form['nombre']
+        corr=request.form['correo']
+        contra=request.form['contra']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('update comenta set correo=%s, comentarios=%s where id=%s', (nom,corr,contra,id))
+        conn.commit()
+    return redirect(url_for('crudAdmin'))
+
+@app.route('/borrar/<string:id>')
+def borrarAdmin(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('delete from comenta where id = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('crudAdmin'))
+
+@app.route('/agrega_admin', methods=['POST'])
+def agrega_comenta():
+    if request.method == 'POST':
+        aux_Nombre = request.form['nombre']
+        aux_Correo = request.form['correo']
+        aux_Contra = request.form['contra']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('insert into comenta (correo,comentarios) values (%s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
+        conn.commit()
+    return redirect(url_for('crudAdmin'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
