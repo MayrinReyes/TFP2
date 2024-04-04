@@ -13,6 +13,8 @@
         <td color="white" bgcolor="#2b1303">Nombre</td>
         <td color="white" bgcolor="#2b1303">Correo</td>
         <td color="white" bgcolor="#2b1303">Password</td>
+        <td color="white" bgcolor="#2b1303">Direccion</td>
+        <td color="white" bgcolor="#2b1303">Telefono</td>
         <td color="white" bgcolor="#2b1303"></td>
         <td color="white" bgcolor="#2b1303"></td>
       </tr>
@@ -20,15 +22,21 @@
     <tbody>
     {% for i in comenta %}
         <tr>
-        <td width="28%">
+        <td width="17%">
            {{i.1}}
         </td>
-        <td width="28%">
+        <td width="17%">
            {{i.2}}
         </td>
-        <td width="28%">
+        <td width="17%">
             {{i.3}}
         </td>
+        <td width="17%">
+          {{i.4}}
+        </td>
+        <td width="16%">
+          {{i.5}}
+        </td> 
         <td bgcolor="#5c3202" width="8%">
         <center><a href="/editClient/{{i.0}}" style="...">Editar</a></center>
         </td>
