@@ -232,7 +232,7 @@ def editAdmin(id):
     return render_template("editAdmin.html", comentar=dato[0])
 
 @app.route('/editar_admin/<string:id>',methods=['POST'])
-def editar_comenta(id):
+def editar_admin(id):
     if request.method == 'POST':
         nom=request.form['nombre']
         corr=request.form['correo']
@@ -252,7 +252,7 @@ def borrarAdmin(id):
     return redirect(url_for('crudAdmin'))
 
 @app.route('/agrega_admin', methods=['POST'])
-def agrega_comenta():
+def agrega_admin():
     if request.method == 'POST':
         aux_Nombre = request.form['nombre']
         aux_Correo = request.form['correo']
@@ -263,6 +263,53 @@ def agrega_comenta():
         conn.commit()
     return redirect(url_for('crudAdmin'))
 
+@app.route('/crudClient')
+def crudClient():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, nombre, correo, contra from cliente order by id')
+    datos = cursor.fetchall()
+    return render_template("crudClient.html", comenta = datos)
+
+@app.route('/editClient/<string:id>')
+def editClient(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, nombre, correo, contra from cliente where id = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("editClient.html", comentar=dato[0])
+
+@app.route('/editar_cliente/<string:id>',methods=['POST'])
+def editar_cliente(id):
+    if request.method == 'POST':
+        nom=request.form['nombre']
+        corr=request.form['correo']
+        contra=request.form['contra']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('update cliente set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
+        conn.commit()
+    return redirect(url_for('crudClient'))
+
+@app.route('/borrar/<string:id>')
+def borrarClient(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('delete from cliente where id = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('crudClient'))
+
+@app.route('/agrega_cliente', methods=['POST'])
+def agrega_comenta():
+    if request.method == 'POST':
+        aux_Nombre = request.form['nombre']
+        aux_Correo = request.form['correo']
+        aux_Contra = request.form['contra']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('insert into cliente (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
+        conn.commit()
+    return redirect(url_for('crudClient'))
 
 if __name__ == "__main__":
     app.run(debug=True)
