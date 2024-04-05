@@ -2,9 +2,9 @@
 CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ;
 USE `db_OAGR` ;
 -- -----------------------------------------------------
--- Table `db_OAGR`.`admin`
+-- Table `db_OAGR`.`adminis`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_OAGR`.`admin` (
+CREATE TABLE IF NOT EXISTS `db_OAGR`.`adminis` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   `correo` VARCHAR(100) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `db_OAGR`.`comentarios` (
    FOREIGN KEY (`id_cliente`) REFERENCES cliente(id));
   
 -- admin predeterminado  
-insert into admin(nombre, correo, contra) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
+insert into adminis(nombre, correo, contra) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
 
 -- Productos
 insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Agua', 'Bebidas', 'agua.png', '409', '20');

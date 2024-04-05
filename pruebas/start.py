@@ -89,7 +89,7 @@ def t():
     return render_template("table.html")
 
 @app.route('/crudAdmin')
-def crA():
+def cA():
     return render_template("crudAdmin.html")
 
 @app.route('/crudClient')
@@ -137,9 +137,9 @@ def conex():
             CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ;
             USE `db_OAGR` ;
             -- -----------------------------------------------------
-            -- Table `db_OAGR`.`admin`
+            -- Table `db_OAGR`.`adminis`
             -- -----------------------------------------------------
-            CREATE TABLE IF NOT EXISTS `db_OAGR`.`admin` (
+            CREATE TABLE IF NOT EXISTS `db_OAGR`.`adminis` (
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `nombre` VARCHAR(100) NOT NULL,
             `correo` VARCHAR(100) NOT NULL,
@@ -201,7 +201,7 @@ def conex():
             FOREIGN KEY (`id_cliente`) REFERENCES cliente(id));
 
             -- admin predeterminado  
-            insert into admin(nombre, correo, contra) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
+            insert into adminis(nombre, correo, contra) values ('mayrin', 'mayrinreyes1707@gmail.com', '12345');
 
             -- Productos
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Agua', 'Bebidas', 'agua.png', '409', '20');
@@ -253,15 +253,41 @@ def conex():
         print("Base de datos y tablas creadas exitosamente")
         conn.close()
 
+@app.route('/inicioA', methods=['POST'])
+def iniciar():
+    if request.method == 'POST':
+        aux_Nom = request.form['nombre']
+        aux_Contra = request.form['contra']
+        conex()
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR' )
+        cursor = conn.cursor()
+        cursor.execute('select nombre, correo, contra from adminis where nombre = %s and contra=%s', (aux_Nom, aux_Contra))
+        resultado = cursor.fetchone()
+        if resultado:
+            print("Bien")
+            return redirect(url_for('iniciA'))
+        else:
+            print("mal")
+            datos =cursor.fetchall()
+            return render_template("Alogin.html", Admin = datos)
 
-
-
+@app.route('/agrega_admin', methods=['POST'])
+def agrega_admin():
+    if request.method == 'POST':
+        aux_Nombre = request.form['nombre']
+        aux_Correo = request.form['correo']
+        aux_Contra = request.form['contra']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('insert into adminis (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
+        conn.commit()
+    return redirect(url_for('crudAdmin'))
 
 @app.route('/crudAdmin')
 def crudAdmin():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from admin order by id')
+    cursor.execute('select id, nombre, correo, contra from adminis order by id')
     datos = cursor.fetchall()
     return render_template("crudAdmin.html", Admin = datos)
 
@@ -293,17 +319,7 @@ def borrarAdmin(id):
     conn.commit()
     return redirect(url_for('crudAdmin'))
 
-@app.route('/agrega_admin', methods=['POST'])
-def agrega_admin():
-    if request.method == 'POST':
-        aux_Nombre = request.form['nombre']
-        aux_Correo = request.form['correo']
-        aux_Contra = request.form['contra']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
-        cursor = conn.cursor()
-        cursor.execute('insert into admin (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
-        conn.commit()
-    return redirect(url_for('crudAdmin'))
+
 
 @app.route('/crudClient')
 def crudClient():
