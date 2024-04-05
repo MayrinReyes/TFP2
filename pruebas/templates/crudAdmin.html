@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layoutA.html" %}
 
 {% block content %}
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
@@ -30,10 +30,10 @@
             {{i.3}}
         </td>
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/editAdmin/{{i.0}}" style="...">Editar</a></center>
+        <center><a href="/editAdmin/{{i.0}}">Editar</a></center>
         </td>
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/borrarAd/{{i.0}}" style="...">Borrar</a></center>
+        <center><a href="/borrarAd/{{i.0}}">Borrar</a></center>
         </td>
         </tr>
     {% endfor %}
