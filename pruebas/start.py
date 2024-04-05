@@ -1,11 +1,11 @@
-#Importar liberia Flask
+# Importar liberia Flask
 from flask import Flask, render_template, request, redirect, url_for, flash
 import pymysql
 
-#Inicializar
+# Inicializar
 app = Flask(__name__)
 
-#Navegacion
+# Navegacion Principal
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -14,27 +14,68 @@ def home():
 def inicio():
     return render_template("index.html")
 
+@app.route('/optionl')
+def oL():
+    return render_template("optionLogin.html")
+
 @app.route('/login')
-def i():
+def iC():
     return render_template("login.html")
 
+@app.route('/Alogin')
+def iA():
+    return render_template("Alogin.html")
+
+@app.route('/Asign')
+def sA():
+    return render_template("Asign.html")
+
 @app.route('/sign')
-def s():
+def sC():
     return render_template("signup.html")
 
 @app.route('/close')
 def c():
     return render_template("close.html")
 
+#Navegador Cliente
+@app.route('/comentarios')
+def coment():
+    return render_template("comentarios.html")
+
 @app.route('/carro')
 def carro():
     return render_template("carrito.html")
 
-##Parte de administradores
-@app.route('/Alogin')
-def Al():
-    return render_template("Alogin.html")
+@app.route('/sushi')
+def sushi():
+    return render_template("sushi.html")
 
+@app.route('/ramen')
+def ramen():
+    return render_template("ramen.html")
+
+@app.route('/postres')
+def postres():
+    return render_template("postres.html")
+
+@app.route('/bebidas')
+def bebidas():
+    return render_template("bebidas.html")
+
+@app.route('/coffee')
+def coffee():
+    return render_template("coffee.html")
+
+@app.route('/pedidosC')
+def pC():
+    return render_template("pedidosC.html")
+
+@app.route('/reservaC')
+def rC():
+    return render_template("reservaC.html")
+
+# Navegador Administradores
 @app.route('/almacen')
 def a():
     return render_template("almacen.html")
@@ -43,15 +84,29 @@ def a():
 def t():
     return render_template("table.html")
 
+@app.route('/crudAdmin')
+def cA():
+    return render_template("crudAdmin.html")
+
+@app.route('/crudClient')
+def cC():
+    return render_template("crudClient.html")
+
+@app.route('/editAdmin')
+def eA():
+    return render_template("editAdmin.html")
+
+@app.route('/editClient')
+def eC():
+    return render_template("editClient.html")
+
+# Comprobacion de base de datos
 def conex():
     conn = pymysql.connect(host='localhost', user='root', passwd='')
     cursor = conn.cursor()
-
-
     # Consulta SQL para verificar la existencia de una base de datos específica (en este caso, 'db_OAGR')
     cursor.execute("SHOW DATABASES LIKE 'db_OAGR'")
     resultado = cursor.fetchone()
-
 
     # Comprueba si la base de datos existe
     if resultado:
@@ -60,7 +115,7 @@ def conex():
         print("La base de datos no existe.")
         cursor.execute("CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ")
         cursor.execute("USE `db_OAGR`")
-       
+
         # Define the SQL statements for table creation
         sql_statements = """
             CREATE SCHEMA IF NOT EXISTS `db_OAGR` DEFAULT CHARACTER SET utf8mb4 ;
