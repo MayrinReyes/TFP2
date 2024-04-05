@@ -5,14 +5,16 @@
     <tbody>
     <tr>
     <td color="FFFFFF" bgcolor="#422d05" valign="top">
-    <right><h3><a href="optionLogin.html">Agregar cuenta</a></h3></right>
-    <center><h3>Cuentas Reistradas</h3></center>
+    <right><h3><a href="almacen.html">Agregar producto</a></h3></right>
+    <center><h3>Productos</h3></center>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <thead>
       <tr>
-        <td color="white" bgcolor="#2b1303">Nombre</td>
-        <td color="white" bgcolor="#2b1303">Correo</td>
-        <td color="white" bgcolor="#2b1303">Password</td>
+        <td color="white" bgcolor="#2b1303">Producto</td>
+        <td color="white" bgcolor="#2b1303">Descripcion</td>
+        <td color="white" bgcolor="#2b1303">Imagen.png</td>
+        <td color="white" bgcolor="#2b1303">Cantidad</td>
+        <td color="white" bgcolor="#2b1303">Precio</td>
         <td color="white" bgcolor="#2b1303"></td>
         <td color="white" bgcolor="#2b1303"></td>
       </tr>
@@ -20,20 +22,26 @@
     <tbody>
     {% for i in comentarios %}
         <tr>
-        <td width="28%">
+        <td width="15%">
            {{i.1}}
         </td>
-        <td width="28%">
+        <td width="49%">
            {{i.2}}
         </td>
-        <td width="28%">
+        <td width="15%">
             {{i.3}}
         </td>
-        <td bgcolor="#5c3202" width="8%">
-        <center><a href="/editAdmin/{{i.0}}" style="...">Editar</a></center>
+        <td width="10%">
+            {{i.4}}
+        </td>
+        <td width="10%">
+            {{i.5}}
         </td>
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/borrarAd/{{i.0}}" style="...">Borrar</a></center>
+        <center><a href="/editAlmacen/{{i.0}}" style="...">Editar</a></center>
+        </td>
+        <td bgcolor="#5c3202" width="8%">
+        <center><a href="/borrarAl/{{i.0}}" style="...">Borrar</a></center>
         </td>
         </tr>
     {% endfor %}
