@@ -367,7 +367,7 @@ def agrega_cliente():
 def crudAlmacen():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, product, descrip, img, cant, precio from almacen order by id')
+    cursor.execute('select id, producto, descripcion, imagen, cantidad, precio from almacen order by id')
     datos = cursor.fetchall()
     return render_template("crudAdmin.html", comentarios = datos)
 
@@ -375,21 +375,21 @@ def crudAlmacen():
 def editAlmacen(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, product, descrip, img, cant, precio from almacen where id = %s', (id))
+    cursor.execute('select id, producto, descripcion, imagen, cantidad, precio from almacen where id = %s', (id))
     dato  = cursor.fetchall()
     return render_template("editAlmacen.html", comentar=dato[0])
 
 @app.route('/editar_almacen/<string:id>',methods=['POST'])
 def editar_almacen(id):
     if request.method == 'POST':
-        pro=request.form['product']
-        des=request.form['descrip']
-        img=request.form['img']
-        cant=request.form['cant']
+        pro=request.form['producto']
+        des=request.form['descripcion']
+        img=request.form['imagen']
+        cant=request.form['cantidad']
         pre=request.form['precio']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update almacen set product=%s, descript=%s, img=%s, cant=%s, precio=%s, where id=%s', (pro,des,img,cant,pre,id))
+        cursor.execute('update almacen set producto=%s, descripcion=%s, imagen=%s, cantidad=%s, precio=%s, where id=%s', (pro,des,img,cant,pre,id))
         conn.commit()
     return redirect(url_for('crudAlmacen'))
 
@@ -404,14 +404,14 @@ def borrarAlmacen(id):
 @app.route('/agrega_almacen', methods=['POST'])
 def agrega_almacen():
     if request.method == 'POST':
-        aux_Produc = request.form['product']
-        aux_Descri = request.form['descrip']
-        aux_Imagen = request.form['img']
-        aux_Cant = request.form['cant']
+        aux_Produc = request.form['producto']
+        aux_Descri = request.form['descripcion']
+        aux_Imagen = request.form['imagen']
+        aux_Cant = request.form['cantidad']
         aux_Precio = request.form['precio']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('insert into almacen (product,descrip,img,cant,precio) values (%s, %s, %s,%s,%s)',(aux_Produc,aux_Descri,aux_Imagen,aux_Cant,aux_Precio))
+        cursor.execute('insert into almacen (producto,descripcion,imagen,cantidad,precio) values (%s, %s, %s,%s,%s)',(aux_Produc,aux_Descri,aux_Imagen,aux_Cant,aux_Precio))
     return redirect(url_for('crudAlmacen'))
 
 if __name__ == "__main__":
