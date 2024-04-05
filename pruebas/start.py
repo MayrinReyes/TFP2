@@ -100,6 +100,17 @@ def eA():
 def eC():
     return render_template("editClient.html")
 
+@app.route('/pedidosA')
+def pA():
+    return render_template("pedidosA.html")
+
+@app.route('/resrevaA')
+def rA():
+    return render_template("reservaA.html")
+
+@app.route('/comentA')
+def cA():
+    return render_template("comentA.html")
 # Comprobacion de base de datos
 def conex():
     conn = pymysql.connect(host='localhost', user='root', passwd='')
