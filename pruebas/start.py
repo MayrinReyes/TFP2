@@ -14,6 +14,10 @@ def home():
 def inicio():
     return render_template("index.html")
 
+@app.route('/indexA')
+def iniciA():
+    return render_template("indexA.html")
+
 @app.route('/optionl')
 def oL():
     return render_template("optionLogin.html")
@@ -40,7 +44,7 @@ def c():
 
 #Navegador Cliente
 @app.route('/comentarios')
-def coment():
+def comentC():
     return render_template("comentarios.html")
 
 @app.route('/carro')
@@ -109,8 +113,9 @@ def rA():
     return render_template("reservaA.html")
 
 @app.route('/comentA')
-def cA():
+def comentA():
     return render_template("comentA.html")
+
 # Comprobacion de base de datos
 def conex():
     conn = pymysql.connect(host='localhost', user='root', passwd='')
