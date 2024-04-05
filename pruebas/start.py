@@ -85,7 +85,7 @@ def t():
     return render_template("table.html")
 
 @app.route('/crudAdmin')
-def cA():
+def crA():
     return render_template("crudAdmin.html")
 
 @app.route('/crudClient')
@@ -249,23 +249,12 @@ def conex():
         conn.close()
 
 
-@app.route('/inicio', methods=['POST'])
-def iniciar():
-    if request.method == 'POST':
-        aux_Nom = request.form['nombre']
-        aux_Correo = request.form['correo']
-        aux_Contra = request.form['contra']
-        conex()
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR' )
-        cursor = conn.cursor()
-        cursor.execute('insert into admin (nombre, correo, contra) values (%s, %s, %s)',(aux_Nom, aux_Correo, aux_Contra))
-        conn.commit()
-    return redirect(url_for('home'))
+
 
 
 @app.route('/crudAdmin')
 def crudAdmin():
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
     cursor = conn.cursor()
     cursor.execute('select id, nombre, correo, contra from admin order by id')
     datos = cursor.fetchall()
@@ -273,7 +262,7 @@ def crudAdmin():
 
 @app.route('/editAdmin/<string:id>')
 def editAdmin(id):
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
     cursor = conn.cursor()
     cursor.execute('select id, nombre, correo, contra from admin where id = %s', (id))
     dato  = cursor.fetchall()
@@ -285,7 +274,7 @@ def editar_admin(id):
         nom=request.form['nombre']
         corr=request.form['correo']
         contra=request.form['contra']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
         cursor = conn.cursor()
         cursor.execute('update admin set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
         conn.commit()
@@ -293,7 +282,7 @@ def editar_admin(id):
 
 @app.route('/borrarAd/<string:id>')
 def borrarAdmin(id):
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
     cursor = conn.cursor()
     cursor.execute('delete from admin where id = {0}'.format(id))
     conn.commit()
@@ -305,7 +294,7 @@ def agrega_admin():
         aux_Nombre = request.form['nombre']
         aux_Correo = request.form['correo']
         aux_Contra = request.form['contra']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
         cursor = conn.cursor()
         cursor.execute('insert into admin (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
         conn.commit()
