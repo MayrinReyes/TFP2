@@ -56,11 +56,50 @@ body {
     border-radius: 15px;
 }
 /*info*/
-
-/*pie pagina*/
-footer{
-    background: black;
+#s{
+    padding: 6px;
+}
+#c{
+    background-color:#073336;
+    color: rgb(196, 212, 220);
+    font-size: 17px;
+}
+#e{
+    font-size: 17px;
+}
+#m{
+    font-size: 18px;
+}
+#p{
+    color: aliceblue;
 }
 /*pie pagina*/
-
-
+footer{
+    background: #1e1d1d;
+    padding: 70px 30px 20px;
+    
+}
+#acolor{
+    color: rgb(241, 241, 245);
+}
+.footerContainer{
+    width: 100%;
+    margin: 0 auto;
+}
+.footer-row{
+    display: flex;
+    flex-wrap: wrap;
+}
+.footer-links{
+    padding: 25px;
+}
+.socialIcons a{
+    font-size: 20px;
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px;
+    background-color:#B8030C;
+    margin: 10px;
+    border-radius: 50%;
+}
+/*pie pagina*/
