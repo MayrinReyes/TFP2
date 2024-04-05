@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <tbody>
+    <tr>
+    <td color="FFFFFF" bgcolor="#422d05" valign="top">
+    <right><h3><a href="/pedidosA">Agregar</a></h3></right>
+    <center><h3>Pedidos</h3></center>
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <thead>
+      <tr>
+        <td color="white" bgcolor="#2b1303">id_cliente</td>
+        <td color="white" bgcolor="#2b1303">id_producto</td>
+        <td color="white" bgcolor="#2b1303">Cantidad</td>
+        <td color="white" bgcolor="#2b1303">Total</td>
+        <td color="white" bgcolor="#2b1303"></td>
+        <td color="white" bgcolor="#2b1303"></td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in comentarios %}
+        <tr>
+        <td width="10%">
+           {{i.1}}
+        </td>
+        <td width="10%">
+           {{i.2}}
+        </td>
+        <td width="32%">
+            {{i.3}}
+        </td>
+        <td width="32%">
+            {{i.4}}
+        </td>
+        <td bgcolor="#5c3202" width="8%">
+        <center><a href="/editPedidosA/{{i.0}}" style="...">Editar</a></center>
+        </td>
+        <td bgcolor="#5c3202" width="8%">
+        <center><a href="/borrarPedA/{{i.0}}" style="...">Borrar</a></center>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+{% endblock %}
