@@ -280,7 +280,7 @@ def editar_admin(id):
         conn.commit()
     return redirect(url_for('crudAdmin'))
 
-@app.route('/borrar/<string:id>')
+@app.route('/borrarAd/<string:id>')
 def borrarAdmin(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
@@ -330,7 +330,7 @@ def editar_cliente(id):
         conn.commit()
     return redirect(url_for('crudClient'))
 
-@app.route('/borrar/<string:id>')
+@app.route('/borrarC/<string:id>')
 def borrarClient(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
@@ -339,7 +339,7 @@ def borrarClient(id):
     return redirect(url_for('crudClient'))
 
 @app.route('/agrega_cliente', methods=['POST'])
-def agrega_comenta():
+def agrega_cliente():
     if request.method == 'POST':
         aux_Nombre = request.form['nombre']
         aux_Correo = request.form['correo']
@@ -351,6 +351,57 @@ def agrega_comenta():
         cursor.execute('insert into cliente (nombre,correo,contra,direccion,telefono) values (%s, %s, %s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra, aux_Direccion, aux_Telefono))
         conn.commit()
     return redirect(url_for('crudClient'))
+
+@app.route('/crudAlmacen')
+def crudAlmacen():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, product, descrip, img, cant, precio from almacen order by id')
+    datos = cursor.fetchall()
+    return render_template("crudAdmin.html", comentarios = datos)
+
+@app.route('/editAlmacen/<string:id>')
+def editAlmacen(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, product, descrip, img, cant, precio from almacen where id = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("editAlmacen.html", comentar=dato[0])
+
+@app.route('/editar_almacen/<string:id>',methods=['POST'])
+def editar_almacen(id):
+    if request.method == 'POST':
+        pro=request.form['product']
+        des=request.form['descrip']
+        img=request.form['img']
+        cant=request.form['cant']
+        pre=request.form['precio']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('update almacen set product=%s, descript=%s, img=%s, cant=%s, precio=%s, where id=%s', (pro,des,img,cant,pre,id))
+        conn.commit()
+    return redirect(url_for('crudAlmacen'))
+
+@app.route('/borrarAl/<string:id>')
+def borrarAlmacen(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('delete from almacen where id = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('crudAlmacen'))
+
+@app.route('/agrega_almacen', methods=['POST'])
+def agrega_almacen():
+    if request.method == 'POST':
+        aux_Produc = request.form['product']
+        aux_Descri = request.form['descrip']
+        aux_Imagen = request.form['img']
+        aux_Cant = request.form['cant']
+        aux_Precio = request.form['precio']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('insert into almacen (product,descrip,img,cant,precio) values (%s, %s, %s,%s,%s)',(aux_Produc,aux_Descri,aux_Imagen,aux_Cant,aux_Precio))
+    return redirect(url_for('crudAlmacen'))
 
 if __name__ == "__main__":
     app.run(debug=True)
