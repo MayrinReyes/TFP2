@@ -89,7 +89,7 @@ def t():
     return render_template("table.html")
 
 @app.route('/crudAdmin')
-def cA():
+def crA():
     return render_template("crudAdmin.html")
 
 @app.route('/crudClient')
@@ -254,23 +254,12 @@ def conex():
         conn.close()
 
 
-@app.route('/inicio', methods=['POST'])
-def iniciar():
-    if request.method == 'POST':
-        aux_Nom = request.form['nombre']
-        aux_Correo = request.form['correo']
-        aux_Contra = request.form['contra']
-        conex()
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR' )
-        cursor = conn.cursor()
-        cursor.execute('insert into admin (nombre, correo, contra) values (%s, %s, %s)',(aux_Nom, aux_Correo, aux_Contra))
-        conn.commit()
-    return redirect(url_for('home'))
+
 
 
 @app.route('/crudAdmin')
 def crudAdmin():
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
     cursor = conn.cursor()
     cursor.execute('select id, nombre, correo, contra from admin order by id')
     datos = cursor.fetchall()
@@ -278,7 +267,7 @@ def crudAdmin():
 
 @app.route('/editAdmin/<string:id>')
 def editAdmin(id):
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
     cursor = conn.cursor()
     cursor.execute('select id, nombre, correo, contra from admin where id = %s', (id))
     dato  = cursor.fetchall()
@@ -290,7 +279,7 @@ def editar_admin(id):
         nom=request.form['nombre']
         corr=request.form['correo']
         contra=request.form['contra']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
         cursor = conn.cursor()
         cursor.execute('update admin set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
         conn.commit()
@@ -298,7 +287,7 @@ def editar_admin(id):
 
 @app.route('/borrarAd/<string:id>')
 def borrarAdmin(id):
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
     cursor = conn.cursor()
     cursor.execute('delete from admin where id = {0}'.format(id))
     conn.commit()
@@ -310,7 +299,7 @@ def agrega_admin():
         aux_Nombre = request.form['nombre']
         aux_Correo = request.form['correo']
         aux_Contra = request.form['contra']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_oagr')
         cursor = conn.cursor()
         cursor.execute('insert into admin (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
         conn.commit()
@@ -418,6 +407,55 @@ def agrega_almacen():
         cursor = conn.cursor()
         cursor.execute('insert into almacen (producto,descripcion,imagen,cantidad,precio) values (%s, %s, %s,%s,%s)',(aux_Produc,aux_Descri,aux_Imagen,aux_Cant,aux_Precio))
     return redirect(url_for('crudAlmacen'))
+
+@app.route('/crudPedidosA')
+def crudPedidoA():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, id_cliente, id_producto, cantidad, total from pedidos order by id')
+    datos = cursor.fetchall()
+    return render_template("crudPedidosA.html", comentarios = datos)
+
+@app.route('/editPedidosA/<string:id>')
+def editPedidosA(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, id_cliente, id_producto, cantidad, total from pedidos where id = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("editPedidosA.html", comentar=dato[0])
+
+@app.route('/editar_pedidos/<string:id>',methods=['POST'])
+def editar_pedidos(id):
+    if request.method == 'POST':
+        cli=request.form['id_cliente']
+        pro=request.form['id_producto']
+        cant=request.form['cantidad']
+        tot=request.form['total']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('update pedidos set id_cliente=%s, id_producto=%s, cantidad=%s, total=%s, where id=%s', (cli,pro,cant,tot,id))
+        conn.commit()
+    return redirect(url_for('crudPedidosA'))
+
+@app.route('/borrarPedA/<string:id>')
+def borrarPedA(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('delete from pedidos where id = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('crudPedidosA'))
+
+@app.route('/agrega_pedidos', methods=['POST'])
+def agrega_pedidos():
+    if request.method == 'POST':
+        aux_Cliente = request.form['id_cliente']
+        aux_Producto = request.form['id_producto']
+        aux_Cant = request.form['cantidad']
+        aux_Total = request.form['total']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('insert into pedidos (id_cliente,id_producto,cantidad,total) values (%s, %s, %s,%s)',(aux_Cliente,aux_Producto,aux_Cant,aux_Total))
+    return redirect(url_for('crudPedidosA'))
 
 if __name__ == "__main__":
     app.run(debug=True)
