@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}  
+<!------carousel--------------->
+
+<div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://i.pinimg.com/236x/91/be/7d/91be7d72fd1b522651c912aa55737f54.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Sakura</h5>
+          <p>¡Contactanos!</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://i.pinimg.com/236x/02/e7/47/02e74734c51e715be013722789a70972.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Sakura</h5>
+          <p>Gracias por visitarnos</p>
+        </div>
+      </div>
+      
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<!------fin carousel--------------->
+
+<!------inf2--------------->
+<br><br>
+<div class="container text-center">
+    <div class="row">
+    <div id="e" class="col-md-6 offset-md-3">Puedes dejarnos un comentario sobre nuestro restaurante y su servicio<br>¡Gracias 
+    por visitarnos , vuelve pronto! </div>
+    </div>
+</div>
+<br><br>
+<!------fin inf2--------------->
+
+        
+<div class="container"><div class="row">
+    <center><div class="col-sm-9 p-3" id="cuadro">
+    <center><form action="/agrega_comenta" method="post">
+        <input type="text" class="form-control" name="id_cliente" id="id_cliente" placeholder="Nombre del Cliente"></input><br>
+        <input type="text" class="form-control p-3" name="razon" id="razon" placeholder="Razon"></input><br>
+        <input type="text" class="form-control p-3 p-4" rows="5" name="mensaje" id="mensaje" placeholder="Mensaje"></input><br>
+        <button type="submit" class="btn btn-primary">Reservar</button><br><br>
+    </form></center></div></center></div></div>
+
+{% endblock %}
