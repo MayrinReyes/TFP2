@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `db_OAGR`.`adminis` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   `correo` VARCHAR(100) NOT NULL,
-  `contra` VARCHAR(10) NOT NULL);
+  `contra` VARCHAR(50) NOT NULL);
 -- -----------------------------------------------------
 -- Table `db_OAGR`.`almacen`
 -- -----------------------------------------------------
@@ -101,7 +101,7 @@ insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Sa
 insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Shio', 'Ramen', 'shio.png', '876', '90');
 insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Tokyo', 'Ramen', 'tokyo.png', '545', '90');
 
-insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Maki', 'Comida', 'maki.png', '345', '80');
-insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Nigiri', 'Comida', 'nigiri.png', '564', '75');
-insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Comida', 'temaki.png', '546', '50');
-insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Comida', 'uramaki.png', '265', '82');
+insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Maki', 'Sushi', 'maki.png', '345', '80');
+insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Nigiri', 'Sushi', 'nigiri.png', '564', '75');
+insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Sushi', 'temaki.png', '546', '50');
+insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Sushi', 'uramaki.png', '265', '82');

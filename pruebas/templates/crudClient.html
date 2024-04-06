@@ -1,4 +1,4 @@
-
+{%extends "layoutA.html"%}
 
 {% block content %}
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
@@ -23,25 +23,25 @@
     {% for i in comenta %}
         <tr>
         <td width="17%">
-           {{i.1}}
+           {{i[1]}}
         </td>
         <td width="17%">
-           {{i.2}}
+           {{i[2]}}
         </td>
         <td width="17%">
-            {{i.3}}
+            {{i[3]}}
         </td>
         <td width="17%">
-          {{i.4}}
+          {{i[4]}}
         </td>
         <td width="16%">
-          {{i.5}}
+          {{i[5]}}
         </td> 
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/editClient/{{i.0}}" >Editar</a></center>
+        <center><a href="/editClient/{{i[0]}}" >Editar</a></center>
         </td>
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/borrarC/{{i.0}}" >Borrar</a></center>
+        <center><a href="/borrarC/{{i[0]}}" >Borrar</a></center>
         </td>
         </tr>
     {% endfor %}

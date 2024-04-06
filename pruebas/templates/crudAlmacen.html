@@ -1,11 +1,11 @@
-{% extends "layout.html" %}
+{% extends "layoutA.html" %}
 
 {% block content %}
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <tbody>
     <tr>
     <td color="FFFFFF" bgcolor="#422d05" valign="top">
-    <right><h3><a href="almacen.html">Agregar producto</a></h3></right>
+    <right><h3><a href="/almacen">Agregar producto</a></h3></right>
     <center><h3>Productos</h3></center>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <thead>
@@ -25,7 +25,7 @@
         <td width="15%">
            {{i.1}}
         </td>
-        <td width="49%">
+        <td width="15%">
            {{i.2}}
         </td>
         <td width="15%">
@@ -38,10 +38,10 @@
             {{i.5}}
         </td>
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/editAlmacen/{{i.0}}" style="...">Editar</a></center>
+        <center><a href="/editAlmacen/{{i.0}}">Editar</a></center>
         </td>
         <td bgcolor="#5c3202" width="8%">
-        <center><a href="/borrarAl/{{i.0}}" style="...">Borrar</a></center>
+        <center><a href="/borrarAl/{{i.0}}" >Borrar</a></center>
         </td>
         </tr>
     {% endfor %}

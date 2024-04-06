@@ -34,9 +34,9 @@ def iA():
 def sA():
     return render_template("Asign.html")
 
-@app.route('/signupC')
+@app.route('/sign')
 def sC():
-    return render_template("signupC.html")
+    return render_template("signup.html")
 
 @app.route('/close')
 def c():
@@ -88,6 +88,22 @@ def a():
 def t():
     return render_template("table.html")
 
+@app.route('/crudAdmin')
+def cA():
+    return render_template("crudAdmin.html")
+
+@app.route('/crudClient')
+def cC():
+    return render_template("crudClient.html")
+
+@app.route('/editAdmin')
+def eA():
+    return render_template("editAdmin.html")
+
+@app.route('/editClient')
+def eC():
+    return render_template("editClient.html")
+
 @app.route('/pedidosA')
 def pA():
     return render_template("pedidosA.html")
@@ -127,7 +143,7 @@ def conex():
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `nombre` VARCHAR(100) NOT NULL,
             `correo` VARCHAR(100) NOT NULL,
-            `contra` VARCHAR(50) NOT NULL);
+            `contra` VARCHAR(10) NOT NULL);
             -- -----------------------------------------------------
             -- Table `db_OAGR`.`almacen`
             -- -----------------------------------------------------
@@ -220,10 +236,10 @@ def conex():
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Shio', 'Ramen', 'shio.png', '876', '90');
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Tokyo', 'Ramen', 'tokyo.png', '545', '90');
 
-            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Maki', 'Sushi', 'maki.png', '345', '80');
-            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Nigiri', 'Sushi', 'nigiri.png', '564', '75');
-            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Sushi', 'temaki.png', '546', '50');
-            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Sushi', 'uramaki.png', '265', '82');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Maki', 'Comida', 'maki.png', '345', '80');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Nigiri', 'Comida', 'nigiri.png', '564', '75');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Comida', 'temaki.png', '546', '50');
+            insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Comida', 'uramaki.png', '265', '82');
         """
         statements = [stmt.strip() for stmt in sql_statements.split(';') if stmt.strip()]
 
@@ -267,20 +283,20 @@ def agrega_admin():
         conn.commit()
     return redirect(url_for('crudAdmin'))
 
-# Tabla registros adminis, editar y borrar
+
 @app.route('/crudAdmin')
 def crudAdmin():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from adminis')
+    cursor.execute('select id, nombre, correo, contra from adminis order by id')
     datos = cursor.fetchall()
     return render_template("crudAdmin.html", Admin = datos)
 
 @app.route('/editAdmin/<string:id>')
 def editAdmin(id):
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR', port=3006)
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra from adminis where id = %s', (id))
+    cursor.execute('select id, nombre, correo, contra from admin where id = %s', (id))
     dato  = cursor.fetchall()
     return render_template("editAdmin.html", Ad=dato[0])
 
@@ -292,7 +308,7 @@ def editar_admin(id):
         contra=request.form['contra']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update adminis set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
+        cursor.execute('update admin set nombre=%s, correo=%s, contra=%s where id=%s', (nom,corr,contra,id))
         conn.commit()
     return redirect(url_for('crudAdmin'))
 
@@ -300,17 +316,17 @@ def editar_admin(id):
 def borrarAdmin(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('delete from adminis where id = {0}'.format(id))
+    cursor.execute('delete from admin where id = {0}'.format(id))
     conn.commit()
     return redirect(url_for('crudAdmin'))
 
 
-# Tabla registros cliente, editar y borrar
+
 @app.route('/crudClient')
 def crudClient():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, nombre, correo, contra, direccion, telefono from cliente order by id')
+    cursor.execute('select nombre, correo, contra, direccion, telefono from cliente order by id')
     datos = cursor.fetchall()
     return render_template("crudClient.html", comenta = datos)
 
@@ -358,14 +374,13 @@ def agrega_cliente():
         conn.commit()
     return redirect(url_for('crudClient'))
 
-# Tabla registros almacen, editar y borrar
 @app.route('/crudAlmacen')
 def crudAlmacen():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
     cursor.execute('select id, producto, descripcion, imagen, cantidad, precio from almacen order by id')
     datos = cursor.fetchall()
-    return render_template("crudAlmacen.html", comentarios = datos)
+    return render_template("crudAdmin.html", comentarios = datos)
 
 @app.route('/editAlmacen/<string:id>')
 def editAlmacen(id):
@@ -378,14 +393,14 @@ def editAlmacen(id):
 @app.route('/editar_almacen/<string:id>',methods=['POST'])
 def editar_almacen(id):
     if request.method == 'POST':
-        pro=request.form['product']
-        des=request.form['descrip']
-        img=request.form['img']
-        cant=request.form['cant']
+        pro=request.form['producto']
+        des=request.form['descripcion']
+        img=request.form['imagen']
+        cant=request.form['cantidad']
         pre=request.form['precio']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update almacen set producto=%s, descripcion=%s, imagen=%s, cantidad=%s, precio=%s where id=%s', (pro,des,img,cant,pre,id))
+        cursor.execute('update almacen set producto=%s, descripcion=%s, imagen=%s, cantidad=%s, precio=%s, where id=%s', (pro,des,img,cant,pre,id))
         conn.commit()
     return redirect(url_for('crudAlmacen'))
 
