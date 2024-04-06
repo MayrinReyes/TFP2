@@ -120,6 +120,10 @@ def comentA():
 def reservas():
     return render_template('reservas.html')
 
+@app.route('/comentarios')
+def comentarios():
+    return render_template('comentarios.html')
+
 # Comprobacion de base de datos
 def conex():
     conn = pymysql.connect(host='localhost', user='root', passwd='')
