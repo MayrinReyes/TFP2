@@ -116,6 +116,10 @@ def rA():
 def comentA():
     return render_template("comentA.html")
 
+@app.route('/reservas')
+def reservas():
+    return render_template('reservas.html')
+
 # Comprobacion de base de datos
 def conex():
     conn = pymysql.connect(host='localhost', user='root', passwd='')
