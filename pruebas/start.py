@@ -34,13 +34,13 @@ def iA():
 def sA():
     return render_template("Asign.html")
 
-@app.route('/sign')
+@app.route('/signC')
 def sC():
     return render_template("signupC.html")
 
-@app.route('/close')
-def c():
-    return render_template("close.html")
+@app.route('/sign')
+def s():
+    return render_template("sign.html")
 
 #Navegador Cliente
 @app.route('/comentarios')
@@ -263,7 +263,6 @@ def iniciar():
             datos =cursor.fetchall()
             return render_template("Alogin.html", Admin = datos)
 
-
 @app.route('/inicioC', methods=['POST'])
 def iniciaC():
     if request.method == 'POST':
@@ -385,6 +384,20 @@ def agrega_cliente():
         conn.commit()
     return redirect(url_for('crudClient'))
 
+@app.route('/reg_cliente', methods=['POST'])
+def registro_cliente():
+    if request.method == 'POST':
+        aux_Nombre = request.form['nombre']
+        aux_Correo = request.form['correo']
+        aux_Contra = request.form['contra']
+        aux_Direccion = request.form['direccion']
+        aux_Telefono = request.form['telefono']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('insert into cliente (nombre,correo,contra,direccion,telefono) values (%s, %s, %s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra, aux_Direccion, aux_Telefono))
+        conn.commit()
+    return redirect(url_for('oL'))
+
 # Tabla registros almacen, editar y borrar
 @app.route('/crudAlmacen')
 def crudAlmacen():
@@ -437,6 +450,7 @@ def agrega_almacen():
         cursor.execute('insert into almacen (producto,descripcion,imagen,cantidad,precio) values (%s, %s, %s,%s,%s)',(aux_Produc,aux_Descri,aux_Imagen,aux_Cant,aux_Precio))
     return redirect(url_for('crudAlmacen'))
 
+# tabla registros pedidos, editar y borrar
 @app.route('/crudPedidosA')
 def crudPedidoA():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
@@ -485,6 +499,15 @@ def agrega_pedidos():
         cursor = conn.cursor()
         cursor.execute('insert into pedidos (id_cliente,id_producto,cantidad,total) values (%s, %s, %s,%s)',(aux_Cliente,aux_Producto,aux_Cant,aux_Total))
     return redirect(url_for('crudPedidosA'))
+
+#tabla registros reservaciones, editar y borrar
+@app.route('/crudReservaA')
+def crudReservaA():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select r.id, c.nombre, r.hora, r.dia, r.nperson, r.mesa from reservas r join cliente c on r.id_cliente = c.id')
+    datos = cursor.fetchall()
+    return render_template("crudRes.html", reservaciones = datos)
 
 if __name__ == "__main__":
     app.run(debug=True)
