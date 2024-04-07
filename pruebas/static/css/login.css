@@ -6,7 +6,7 @@
   }
   body{
     
-    background: url(https://i.pinimg.com/564x/69/fa/72/69fa725ae04e724e83252d1e2273a204.jpg) no-repeat;
+     background: url(https://i.pinimg.com/564x/69/fa/72/69fa725ae04e724e83252d1e2273a204.jpg) no-repeat;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -107,4 +107,7 @@
   }
   .register-link p a:hover{
     text-decoration: underline;
+  }
+h3{
+    color: #fff !important;
   }

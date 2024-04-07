@@ -319,3 +319,35 @@ h1 {
     }
   }
 /*fin carro*/
+input{
+    border: 1px solid #B8030C;
+}
+.containerA{
+    padding-left: 18%;
+}
+.rowA{
+    background-color: #7C4F1F;
+    width:  80%;
+    height: 75vh;
+
+    justify-content: center;
+
+}
+#b{
+    background-color: #3E4E5D;
+}
+h5{
+    color: #fff!Important;
+}
+.at{
+    color: #a5b8bc!Important;
+}
+.lk{
+    color: #e98f1a;
+}
+.lt{
+    color: #cccfdf!Important;
+}
+.tb{
+    width: 70%;
+}
