@@ -26,6 +26,16 @@ body{
   padding: 30px 40px;
   
 }
+#w{
+    width: 420px;
+    height: 700px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(9px);
+    color: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+  }
  #wrapper {
     margin: 50px; 
   }
