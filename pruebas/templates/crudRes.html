@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <tbody>
+    <tr>
+    <td color="FFFFFF" bgcolor="#422d05" valign="top">
+    <right><h3><a href="/reservas">Agregar</a></h3></right>
+    <center><h3>Pedidos</h3></center>
+    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+    <thead>
+      <tr>
+        <td color="white" bgcolor="#2b1303">id_cliente</td>
+        <td color="white" bgcolor="#2b1303">Hora</td>
+        <td color="white" bgcolor="#2b1303">Dia</td>
+        <td color="white" bgcolor="#2b1303">No. de Personas</td>
+        <td color="white" bgcolor="#2b1303">Mesa</td>
+        <td color="white" bgcolor="#2b1303"></td>
+        <td color="white" bgcolor="#2b1303"></td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in reservaciones %}
+        <tr>
+        <td width="16%">
+           {{i.1}}
+        </td>
+        <td width="16%">
+           {{i.2}}
+        </td>
+        <td width="16%">
+            {{i.3}}
+        </td>
+        <td width="16%">
+            {{i.4}}
+        </td>
+        <td width="16%">
+            {{i.5}}
+        </td>
+        <td bgcolor="#5c3202" width="10%">
+        <center><a href="/editRes/{{i.0}}">Editar</a></center>
+        </td>
+        <td bgcolor="#5c3202" width="10%">
+        <center><a href="/borrarPedA/{{i.0}}">Borrar</a></center>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+{% endblock %}
