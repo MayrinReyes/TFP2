@@ -34,7 +34,7 @@ def iA():
 def sA():
     return render_template("Asign.html")
 
-@app.route('/signupC')
+@app.route('/sign')
 def sC():
     return render_template("signupC.html")
 
@@ -263,6 +263,25 @@ def iniciar():
             datos =cursor.fetchall()
             return render_template("Alogin.html", Admin = datos)
 
+
+@app.route('/inicioC', methods=['POST'])
+def iniciaC():
+    if request.method == 'POST':
+        aux_Nom = request.form['nombre']
+        aux_Contra = request.form['contra']
+        conex()
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR' )
+        cursor = conn.cursor()
+        cursor.execute('select nombre, correo, contra from cliente where nombre = %s and contra=%s', (aux_Nom, aux_Contra))
+        resultado = cursor.fetchone()
+        if resultado:
+            print("Bien")
+            return redirect(url_for('inicio'))
+        else:
+            print("mal")
+            datos =cursor.fetchall()
+            return render_template("login.html", Client =datos)
+
 @app.route('/agrega_admin', methods=['POST'])
 def agrega_admin():
     if request.method == 'POST':
@@ -273,7 +292,7 @@ def agrega_admin():
         cursor = conn.cursor()
         cursor.execute('insert into adminis (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
         conn.commit()
-    return redirect(url_for('crudAdmin'))
+        return redirect(url_for('oL'))
 
 # Tabla registros adminis, editar y borrar
 @app.route('/crudAdmin')
