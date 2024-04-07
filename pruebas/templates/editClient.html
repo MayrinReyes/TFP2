@@ -2,18 +2,39 @@
 {% block content %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> 
 <link rel="stylesheet" href="../static/css/style.css">
-<br><br>
-<div class="container"><div class="row">
-  <center><div class="col-6" id="cuadro">
-  <center><form action="/editar_cliente/{{comentar.0}}" method="post">
-      <br><h3>INICIAR SESION</h3><br> 
-      <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" value="{{comentar.1}}"></input><br>
-      <input type="text" class="form-control" name="direccion" id="direccion" placeholder="direccion" value="{{comentar.4}}"></input><br>
-      <input type="tel" class="form-control" name="telefono" id="telefono" placeholder="telefono" value="{{comentar.5}}"></input><br>
-      <input type="email" class="form-control" name="correo" id="correo" placeholder="correo" value="{{comentar.2}}"></input><br>
-      <input type="text" class="form-control" name="contra" id="contra" placeholder="contraseña" value="{{comentar.3}}"></input><br>
-      <button type="submit" class="btn btn-primary">Actualizar</button><br>
-  </form></center></div></center></div></div>
-<br>
+<div id="w" class="wrapper">
+    <form action="/editar_cliente/{{comentar.0}}" method="post">
+      <br>
+      <h8>INICIO SESION</h8>
+      <div class="input-box">
+        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" value="{{comentar.1}}"></input>
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="direccion" value="{{comentar.4}}"></input>
+        <i class='bx bxs-lock-alt' ></i>
+      </div>
+      <div class="input-box">
+        <input type="tel" class="form-control" name="telefono" id="telefono" placeholder="telefono"value="{{comentar.5}}"></input>
+        <i class='bx bxs-lock-alt' ></i>
+      </div>
+      <div class="input-box">
+        <input type="email" class="form-control" name="correo" id="correo" placeholder="correo"value="{{comentar.2}}"></input>
+        <i class='bx bxs-lock-alt' ></i>
+      </div>
+      <div class="input-box">
+        <input type="text" class="form-control" name="contra" id="contra" placeholder="contraseña"value="{{comentar.3}}"></input><br>
+        <i class='bx bxs-lock-alt' ></i>
+      </div>
+      <div class="remember-forgot">
+        <label><input type="checkbox">Remember Me</label>
+        <a href="#">Forgot Password</a>
+      </div>
+      <button type="submit" class="btn">Login</button>
+      <div class="register-link">
+        <p>Dont have an account? <a href="#">Register</a></p>
+      </div>
+    </form>
+  </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 {% endblock %}
