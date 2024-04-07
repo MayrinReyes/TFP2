@@ -1,22 +1,58 @@
 {%extends "layoutA.html"%}
 
 {% block content %}
-    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
+<!------carousel--------------->
+
+<div id="carouselExampleCaptions" class="carousel slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://i.pinimg.com/236x/c8/07/a6/c807a6b3627a1fe39e22adf12a484ccf.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Cuentas</h5>
+        <p>¡datos!</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://i.pinimg.com/236x/b5/21/bd/b521bd57c219a0890cfcc51b5859c2a2.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Cuentas</h5>
+        <p>registro de personas ingresadas</p>
+      </div>
+    </div>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!------fin carousel--------------->
+<br><br>
+   <center><table class="tb" width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <tbody>
     <tr>
-    <td color="FFFFFF" bgcolor="#422d05" valign="top">
-    <right><h3><a href="/signupC">Agregar cuenta</a></h3></right>
+    <td class="lt" color="#FFF" bgcolor="#3E4E5D"  valign="top">
+    <right><h3><a class="lk" href="/signupC">Agregar cuenta</a></h3></right>
     <center><h3>Cuentas Reistradas</h3></center>
     <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
     <thead>
       <tr>
-        <td color="white" bgcolor="#2b1303">Nombre</td>
-        <td color="white" bgcolor="#2b1303">Correo</td>
-        <td color="white" bgcolor="#2b1303">Password</td>
-        <td color="white" bgcolor="#2b1303">Direccion</td>
-        <td color="white" bgcolor="#2b1303">Telefono</td>
-        <td color="white" bgcolor="#2b1303"></td>
-        <td color="white" bgcolor="#2b1303"></td>
+        <td class="lt" color="white" bgcolor="#111019">Nombre</td>
+        <td class="lt" color="white" bgcolor="#111019">Correo</td>
+        <td class="lt" color="white" bgcolor="#111019">Password</td>
+        <td class="lt" color="white" bgcolor="#111019">Direccion</td>
+        <td class="lt" color="white" bgcolor="#111019">Telefono</td>
+        <td class="lt" color="white" bgcolor="#21202E"></td>
+        <td class="lt" color="white" bgcolor="#21202E"></td>
       </tr>
     </thead>
     <tbody>
@@ -37,10 +73,10 @@
         <td width="16%">
           {{i[5]}}
         </td> 
-        <td bgcolor="#5c3202" width="8%">
+        <td bgcolor="#CF3C00" width="8%">
         <center><a href="/editClient/{{i[0]}}" >Editar</a></center>
         </td>
-        <td bgcolor="#5c3202" width="8%">
+        <td bgcolor="#CF3C00" width="8%">
         <center><a href="/borrarC/{{i[0]}}" >Borrar</a></center>
         </td>
         </tr>
@@ -50,5 +86,5 @@
     </td>
     </tr>
     </tbody>
-    </table>
+    </table></center> <br><br>
 {% endblock %}
