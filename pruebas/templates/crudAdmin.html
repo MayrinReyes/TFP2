@@ -1,45 +1,81 @@
 {% extends "layoutA.html" %}
 {% block content %}
+  <!------carousel--------------->
+
+<div id="carouselExampleCaptions" class="carousel slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://i.pinimg.com/236x/18/8b/cf/188bcf041479a51a7060c47c423608c5.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Sakura</h5>
+        <p>¡Contactanos!</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://i.pinimg.com/236x/f2/a1/71/f2a171b1e7fff11cb5f42bc2a5edeb33.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Sakura</h5>
+        <p>Gracias por visitarnos</p>
+      </div>
+    </div>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!------fin carousel--------------->
+<br><br>
+<center><table class="tb" width="100%" border="1" cellpadding="0" bordercolor="#000000">
+  <tbody>
+  <tr>
+  <td class="lt" color="#FFF" bgcolor="#3E4E5D" valign="top">
+  <right><h5><a class="lk" href="/Asign">Agregar cuenta</a></h5></right>
+  <center><h5>Cuentas Reistradas</h5></center>
   <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
-    <tbody>
+  <thead>
     <tr>
-    <td color="FFFFFF" bgcolor="#422d05" valign="top">
-    <right><h3><a href="/Asign">Agregar cuenta</a></h3></right>
-    <center><h3>Cuentas Reistradas</h3></center>
-    <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
-    <thead>
-      <tr>
-        <td color="white" bgcolor="#2b1303">Nombre</td>
-        <td color="white" bgcolor="#2b1303">Correo</td>
-        <td color="white" bgcolor="#2b1303">Password</td>
-        <td color="white" bgcolor="#2b1303"></td>
-        <td color="white" bgcolor="#2b1303"></td>
-      </tr>
-    </thead>
-    <tbody>
-    {% for i in Admin %}
-        <tr>
-        <td width="28%">
-           {{i.1}}
-        </td>
-        <td width="28%">
-           {{i.2}}
-        </td>
-        <td width="28%">
-            {{i.3}}
-        </td>
-        <td bgcolor="#5c3202" width="8%">
-        <center><a href="/editAdmin/{{i.0}}">Editar</a></center>
-        </td>
-        <td bgcolor="#5c3202" width="8%">
-        <center><a href="/borrarAd/{{i.0}}">Borrar</a></center>
-        </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
-    </td>
+      <td class="lt" color="#fff" bgcolor="#111019">Nombre</td>
+      <td class="lt" color="white" bgcolor="#111019">Correo</td>
+      <td class="lt" color="white" bgcolor="#111019">Password</td>
+      <td class="lt" color="white" bgcolor="#21202E"></td>
+      <td class="lt" color="white" bgcolor="#21202E"></td>
     </tr>
-    </tbody>
+  </thead>
+  <tbody>
+  {% for i in Admin %}
+      <tr>
+      <td width="28%">
+         {{i.1}}
+      </td>
+      <td width="28%">
+         {{i.2}}
+      </td>
+      <td width="28%">
+          {{i.3}}
+      </td>
+      <td bgcolor="#CF3C00" width="8%">
+      <center><a class="at"href="/editAdmin/{{i.0}}">Editar</a></center>
+      </td>
+      <td bgcolor="#CF3C00" width="8%">
+      <center><a class="at"href="/borrarAd/{{i.0}}">Borrar</a></center>
+      </td>
+      </tr>
+  {% endfor %}
+  </tbody>
   </table>
+  </td>
+  </tr>
+  </tbody>
+</table></center><br><br>
 {% endblock %}
