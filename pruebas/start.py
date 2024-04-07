@@ -108,6 +108,9 @@ def reservas():
 def comentarios():
     return render_template('comentarios.html')
 
+@app.route('/carrito')
+def carrito():
+    return render_template('tablas.html')
 # Comprobacion de base de datos
 def conex():
     conn = pymysql.connect(host='localhost', user='root', passwd='')
