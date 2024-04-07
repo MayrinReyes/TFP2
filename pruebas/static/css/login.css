@@ -26,6 +26,19 @@ body{
   padding: 30px 40px;
   
 }
+ #wrapper {
+    margin: 50px; 
+  }
+  .wrapper h7{
+    font-size: 36px;
+    text-align:left;
+    padding-left: 90px;
+  }
+  .wrapper h8{
+    font-size: 36px;
+    text-align:left;
+    padding-left: 20px;
+  }
 .wrapper h1{
   font-size: 36px;
   text-align:left;
