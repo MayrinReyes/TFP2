@@ -290,6 +290,7 @@ def agrega_admin():
         aux_Nombre = request.form['nombre']
         aux_Correo = request.form['correo']
         aux_Contra = request.form['contra']
+        conex()
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
         cursor.execute('insert into adminis (nombre,correo,contra) values (%s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra))
@@ -395,6 +396,7 @@ def registro_cliente():
         aux_Contra = request.form['contra']
         aux_Direccion = request.form['direccion']
         aux_Telefono = request.form['telefono']
+        conex()
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
         cursor.execute('insert into cliente (nombre,correo,contra,direccion,telefono) values (%s, %s, %s, %s, %s)',(aux_Nombre, aux_Correo, aux_Contra, aux_Direccion, aux_Telefono))
