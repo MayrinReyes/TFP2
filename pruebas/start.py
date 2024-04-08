@@ -501,7 +501,7 @@ def agrega_pedidos():
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
         cursor.execute('insert into pedidos (id_cliente,id_producto,cantidad,total) values (%s, %s, %s,%s)',(aux_Cliente,aux_Producto,aux_Cant,aux_Total))
-    return redirect(url_for('crudPedidosA'))
+    return redirect(url_for('agrega_pedidos'))
 
 #tabla registros reservaciones, editar y borrar
 @app.route('/crudReservaA')
@@ -511,6 +511,53 @@ def crudReservaA():
     cursor.execute('select r.id, c.nombre, r.hora, r.dia, r.nperson, r.mesa from reservas r join cliente c on r.id_cliente = c.id')
     datos = cursor.fetchall()
     return render_template("crudRes.html", reservaciones = datos)
+
+@app.route('/editRes/<string:id>')
+def editResA(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select id, id_cliente, hora, dia, nperson, mesa from reservas where id = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("editRes.html", comentar=dato[0])
+
+@app.route('/editar_reservas/<string:id>',methods=['POST'])
+def editar_reserva(id):
+    if request.method == 'POST':
+        cli=request.form['id_cliente']
+        h=request.form['hora']
+        d=request.form['dia']
+        np=request.form['nperson']
+        m=request.form['mesa']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('update reservas set id_cliente=%s, hora=%s, dia=%s, nperson=%s, mesa=%s, where id=%s', (cli, h, d, np, m, id))
+        conn.commit()
+    return redirect(url_for('crudReservaA'))
+
+@app.route('/borrarRes/<string:id>')
+def borrarResA(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('delete from reservas where id = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('crudRes'))
+
+@app.route('/agrega_reservas', methods=['POST'])
+def agrega_res():
+    if request.method == 'POST':
+        cli=request.form['id_cliente']
+        h=request.form['hora']
+        d=request.form['dia']
+        np=request.form['nperson']
+        m=request.form['mesa']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('select id from cliente where nombre = %s', (cli))
+        id = cursor.fetchall()
+        cursor.execute('insert into reservas (id_cliente, hora, dia, nperson, mesa) values (%s, %s, %s,%s, %s)',(id, h, d, np, m))
+        datos = cursor.fetchall()
+    return redirect(url_for('crudReservaA'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
