@@ -92,10 +92,6 @@ def t():
 def pA():
     return render_template("pedidosA.html")
 
-@app.route('/resrevaA')
-def rA():
-    return render_template("reservaA.html")
-
 @app.route('/comentA')
 def comentA():
     return render_template("comentA.html")
@@ -235,6 +231,14 @@ def conex():
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Nigiri', 'Sushi', 'nigiri.png', '564', '75');
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Sushi', 'temaki.png', '546', '50');
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Sushi', 'uramaki.png', '265', '82');
+
+            insert into clientes (nombre, correo, contra, direccion, telefono) values ('alid',	'probanding@gmail.com',	'sepa si quedo bien',	'9878989034 5345',	'4494359680');
+            insert into clientes (nombre, correo, contra, direccion, telefono) values ('val', 'dkwoen@hotmail.com', 'ey eso', 'ttyfyjugb', '4495699410');
+            insert into reservas (id_cliente, hora, dia, nperson, mesa) values ('1', '10:00', '2024-04-17', '3', '5');
+            insert into comentarios (id_cliente, razon, mensaje) values ('1', 'prueba2', 'mensaje	');
+            insert into comentarios (id_cliente, razon, mensaje) values ('1', 'prueba', 'solo estoy probando que guarde mis comentarios');
+            insert into comentarios (id_cliente, razon, mensaje) values ('2', 'jala o no', 'me avente todo el disenio, falta la funcion');
+            insert into pedidos (id_cliente, id_producto, cantidad, total) values ('1', '1', '3', '60');
         """
         statements = [stmt.strip() for stmt in sql_statements.split(';') if stmt.strip()]
 
@@ -460,7 +464,7 @@ def agrega_almacen():
 def crudPedidoA():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, id_cliente, id_producto, cantidad, total from pedidos order by id')
+    cursor.execute('select p.id, c.nombre, a.producto, p.cantidad, p.total from pedidos p join cliente c on p.id_cliente = c.id join almacen a on a.id = p.id_producto')
     datos = cursor.fetchall()
     return render_template("crudPedidosA.html", comentarios = datos)
 
@@ -468,22 +472,30 @@ def crudPedidoA():
 def editPedidosA(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, id_cliente, id_producto, cantidad, total from pedidos where id = %s', (id))
+    cursor.execute('select p.id, c.nombre, a.producto, p.cantidad, p.total from pedidos p join cliente c on p.id_cliente = c.id join almacen a on a.id = p.id_producto and p.id = %s', (id))
     dato  = cursor.fetchall()
     return render_template("editPedidosA.html", comentar=dato[0])
 
+# Incolpeto
 @app.route('/editar_pedidos/<string:id>',methods=['POST'])
 def editar_pedidos(id):
     if request.method == 'POST':
-        cli=request.form['id_cliente']
-        pro=request.form['id_producto']
-        cant=request.form['cantidad']
-        tot=request.form['total']
+        cli=request.form['nombre']
+        pro=request.form['prod']
+        cant=int(request.form['cant'])
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update pedidos set id_cliente=%s, id_producto=%s, cantidad=%s, total=%s, where id=%s', (cli,pro,cant,tot,id))
+        cursor.execute('select id from cliente where nombre = %s', (cli,))
+        id_c = cursor.fetchone()[0]
+        cursor.execute('select id, precio, cantidad from almacen where producto = %s', (pro,))
+        id_p, precio, a_c = cursor.fetchone()
+        p = int(precio)
+        tot = cant * p
+        menos = a_c - cant
+        cursor.execute('update almacen set cantidad=%s where id=%s', (menos, id_p))
+        cursor.execute('update pedidos set id_cliente=%s, id_producto=%s, cantidad=%s, total=%s where id=%s', (id_c, id_p, cant, tot, id))
         conn.commit()
-    return redirect(url_for('crudPedidosA'))
+    return redirect(url_for('crudPedidoA'))
 
 @app.route('/borrarPedA/<string:id>')
 def borrarPedA(id):
@@ -496,14 +508,44 @@ def borrarPedA(id):
 @app.route('/agrega_pedidos', methods=['POST'])
 def agrega_pedidos():
     if request.method == 'POST':
-        aux_Cliente = request.form['id_cliente']
-        aux_Producto = request.form['id_producto']
-        aux_Cant = request.form['cantidad']
-        aux_Total = request.form['total']
+        n = request.form['nombre']
+        p = request.form['prod']
+        c = request.form['cant']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('insert into pedidos (id_cliente,id_producto,cantidad,total) values (%s, %s, %s,%s)',(aux_Cliente,aux_Producto,aux_Cant,aux_Total))
+        cursor.execute('select id from cliente where nombre = %s', (n))
+        id_c = cursor.fetchall()
+        cursor.execute('select id, precio, cantidad from almacen where producto = %s', (p))
+        id_p, precio, a_c = cursor.fetchone()
+        p = int(precio)
+        c= int(c)
+        tot = c * p
+        menos = a_c - c
+        cursor.execute('update almacen set cantidad=%s where id=%s', (menos, id_p))
+        cursor.execute('insert into pedidos (id_cliente,id_producto,cantidad,total) values (%s, %s, %s,%s)',(id_c,id_p,c,tot))
+        conn.commit()
     return redirect(url_for('agrega_pedidos'))
+
+@app.route('/reg_pedidos', methods=['POST'])
+def reg_pedidos():
+    if request.method == 'POST':
+        n = request.form['nombre']
+        p = request.form['prod']
+        c = request.form['cant']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('select id from cliente where nombre = %s', (n))
+        id_c = cursor.fetchall()
+        cursor.execute('select id, precio, cantidad from almacen where producto = %s', (p))
+        id_p, precio, a_c = cursor.fetchone()
+        p = int(precio)
+        c= int(c)
+        tot = c * p
+        menos = a_c - c
+        cursor.execute('update almacen set cantidad=%s where id=%s', (menos, id_p))
+        cursor.execute('insert into pedidos (id_cliente,id_producto,cantidad,total) values (%s, %s, %s,%s)',(id_c,id_p,c,tot))
+        conn.commit()
+    return redirect(url_for('inicio'))
 
 #tabla registros reservaciones, editar y borrar
 @app.route('/crudReservaA')
@@ -518,9 +560,9 @@ def crudReservaA():
 def editResA(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
     cursor = conn.cursor()
-    cursor.execute('select id, id_cliente, hora, dia, nperson, mesa from reservas where id = %s', (id))
+    cursor.execute('select r.id, c.nombre, r.hora, r.dia, r.nperson, r.mesa from reservas r join cliente c on c.id= r.id_cliente and r.id = %s', (id))
     dato  = cursor.fetchall()
-    return render_template("editRes.html", comentar=dato[0])
+    return render_template("editRes.html", reserva=dato[0])
 
 @app.route('/editar_reservas/<string:id>',methods=['POST'])
 def editar_reserva(id):
@@ -532,7 +574,9 @@ def editar_reserva(id):
         m=request.form['mesa']
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
         cursor = conn.cursor()
-        cursor.execute('update reservas set id_cliente=%s, hora=%s, dia=%s, nperson=%s, mesa=%s, where id=%s', (cli, h, d, np, m, id))
+        cursor.execute('select id from cliente where nombre = %s', (cli))
+        id_c = cursor.fetchall()
+        cursor.execute('update reservas set id_cliente=%s, hora=%s, dia=%s, nperson=%s, mesa=%s where id=%s', (id_c, h, d, np, m, id))
         conn.commit()
     return redirect(url_for('crudReservaA'))
 
@@ -557,9 +601,95 @@ def agrega_res():
         cursor.execute('select id from cliente where nombre = %s', (cli))
         id = cursor.fetchall()
         cursor.execute('insert into reservas (id_cliente, hora, dia, nperson, mesa) values (%s, %s, %s,%s, %s)',(id, h, d, np, m))
+        conn.commit()
         datos = cursor.fetchall()
     return redirect(url_for('crudReservaA'))
 
+@app.route('/reg_reservas', methods=['POST'])
+def reg_res():
+    if request.method == 'POST':
+        cli=request.form['id_cliente']
+        h=request.form['hora']
+        d=request.form['dia']
+        np=request.form['nperson']
+        m=request.form['mesa']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('select id from cliente where nombre = %s', (cli))
+        id = cursor.fetchall()
+        cursor.execute('insert into reservas (id_cliente, hora, dia, nperson, mesa) values (%s, %s, %s,%s, %s)',(id, h, d, np, m))
+        conn.commit()
+        datos = cursor.fetchall()
+    return redirect(url_for('inicio'))
+
+# tabla de registros comentarios, editar y borrar
+@app.route('/crudComent')
+def crudComA():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select co.id, c.nombre, co.razon, co.mensaje from comentarios co join cliente c on c.id = co.id_cliente')
+    datos = cursor.fetchall()
+    return render_template("crudComent.html", comentarios = datos)
+
+@app.route('/editComent/<string:id>')
+def editcoment(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('select co.id, c.nombre, co.razon, co.mensaje from comentarios co join cliente c on c.id = co.id_cliente and co.id = %s', (id))
+    dato  = cursor.fetchall()
+    return render_template("editComent.html", comenta=dato[0])
+
+@app.route('/editar_comenta/<string:id>',methods=['POST'])
+def editar_comenta(id):
+    if request.method == 'POST':
+        n=request.form['nombre']
+        r=request.form['razon']
+        m=request.form['mensaje']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('select id from cliente where nombre = %s', (n))
+        id_c = cursor.fetchall()
+        cursor.execute('update comentarios set id_cliente=%s, razon=%s, mensaje=%s where id=%s', (id_c, r, m, id))
+        conn.commit()
+    return redirect(url_for('crudComA'))
+
+@app.route('/borrarComent/<string:id>')
+def borraComa(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+    cursor = conn.cursor()
+    cursor.execute('delete from comentarios where id = {0}'.format(id))
+    conn.commit()
+    return redirect(url_for('crudComent'))
+
+@app.route('/agrega_comenta', methods=['POST'])
+def agrega_com():
+    if request.method == 'POST':
+        n=request.form['nombre']
+        r=request.form['razon']
+        m=request.form['mensaje']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('select id from cliente where nombre = %s', (n))
+        id = cursor.fetchall()
+        cursor.execute('insert into comentarios (id_cliente, razon, mensaje) values (%s, %s, %s)',(id, r, m))
+        conn.commit()
+        datos = cursor.fetchall()
+    return redirect(url_for('crudComA'))
+
+@app.route('/reg_comenta', methods=['POST'])
+def reg_com():
+    if request.method == 'POST':
+        n=request.form['nombre']
+        r=request.form['razon']
+        m=request.form['mensaje']
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='db_OAGR')
+        cursor = conn.cursor()
+        cursor.execute('select id from cliente where nombre = %s', (n))
+        id = cursor.fetchall()
+        cursor.execute('insert into comentarios (id_cliente, razon, mensaje) values (%s, %s, %s)',(id, r, m))
+        conn.commit()
+        datos = cursor.fetchall()
+    return redirect(url_for('inicio'))
 
 if __name__ == "__main__":
     app.run(debug=True)

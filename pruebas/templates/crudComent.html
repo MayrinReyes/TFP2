@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layoutA.html" %}
 
 {% block content %}
    <br><br>
@@ -11,7 +11,7 @@
   <table width="100%" border="1" cellpadding="0" bordercolor="#000000">
   <thead>
     <tr>
-      <td class="lt" color="white" bgcolor="#242633">id_cliente</td>
+      <td class="lt" color="white" bgcolor="#242633">Nombre</td>
       <td class="lt" color="white" bgcolor="#242633">Razon</td>
       <td class="lt" color="white" bgcolor="#242633">Mensaje</td>
       <td class="lt" color="white" bgcolor="#2b1303"></td>
@@ -34,7 +34,7 @@
       <center><a class="at" href="/editComent/{{i.0}}">Editar</a></center>
       </td>
       <td bgcolor="#B49348" width="8%">
-      <center><a class="at" href="/borrarPedA/{{i.0}}">Borrar</a></center>
+      <center><a class="at" href="/borrarComent/{{i.0}}">Borrar</a></center>
       </td>
       </tr>
   {% endfor %}
