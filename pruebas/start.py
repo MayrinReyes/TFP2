@@ -232,8 +232,8 @@ def conex():
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Temaki', 'Sushi', 'temaki.png', '546', '50');
             insert into almacen(producto, descripcion, imagen, cantidad, precio) values ('Uramaki', 'Sushi', 'uramaki.png', '265', '82');
 
-            insert into clientes (nombre, correo, contra, direccion, telefono) values ('alid',	'probanding@gmail.com',	'sepa si quedo bien',	'9878989034 5345',	'4494359680');
-            insert into clientes (nombre, correo, contra, direccion, telefono) values ('val', 'dkwoen@hotmail.com', 'ey eso', 'ttyfyjugb', '4495699410');
+            insert into cliente (nombre, correo, contra, direccion, telefono) values ('alid',	'probanding@gmail.com',	'sepa si quedo bien',	'9878989034 5345',	'4494359680');
+            insert into cliente (nombre, correo, contra, direccion, telefono) values ('val', 'dkwoen@hotmail.com', 'ey eso', 'ttyfyjugb', '4495699410');
             insert into reservas (id_cliente, hora, dia, nperson, mesa) values ('1', '10:00', '2024-04-17', '3', '5');
             insert into comentarios (id_cliente, razon, mensaje) values ('1', 'prueba2', 'mensaje	');
             insert into comentarios (id_cliente, razon, mensaje) values ('1', 'prueba', 'solo estoy probando que guarde mis comentarios');
